@@ -43,8 +43,8 @@ CREATE TABLE tb_right(
 CREATE TABLE tb_group(
 	id BIGINT(20) not null auto_increment PRIMARY key comment '组ID',
 	group_name VARCHAR(64) not null comment '组名称',
-	created TIMESTAMP DEFAULT CURRENT_TIMESTAMP comment '创建时间',
-	description VARCHAR(200) comment '组信息描述'
+	description VARCHAR(200) comment '组信息描述',
+	created TIMESTAMP DEFAULT CURRENT_TIMESTAMP comment '创建时间'
 )comment '用于用户分组，便于权限管理'
 
 
