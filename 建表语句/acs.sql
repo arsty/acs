@@ -7,6 +7,12 @@
 	
 	2、分组
 	当用户较多时，要给系统每个用户逐一授权，是件繁琐的事情，这就需要分组了，每个组内有多个用户，除了给用户授权外，还可以给用户组授权
+
+	3、问题
+	要给用户授权某一层楼的门禁
+	这是权限和门禁的关系
+	所以要不要再弄个权限-门禁表呢？
+	还是给门禁分组，然后使用组id？
 */
 
 CREATE TABLE tb_user(
@@ -27,14 +33,13 @@ CREATE TABLE tb_role(
 	role_name VARCHAR(64) not null comment '名称',
 	created TIMESTAMP DEFAULT CURRENT_TIMESTAMP comment '创建时间',
 	description VARCHAR(200) comment '角色描述'
-)comment '用户角色信息,主要是无权登录后台的普通用户，以及可以登录后台的管理员和超级管理员'
+)comment '用户角色信息,无权登录后台的普通用户，可以登录后台的管理员和超级管理员'
 
 
 CREATE TABLE tb_right(
 	id BIGINT(20) not null auto_increment PRIMARY key comment '权限ID',
 	right_name VARCHAR(64) not null comment '权限名称',
-	right_type TINYINT not null comment '1,允许,0,不允许',
-	ac_id int(10) comment '门禁编号',
+	range VARCHAR(12) not null comment '权限范围',
 	description VARCHAR(200) comment '权限具体描述'
 )comment '权限表'
 
@@ -49,15 +54,43 @@ CREATE TABLE tb_group(
 
 
 
+CREATE TABLE group_right(
+	gr_id BIGINT(20) not null AUTO_INCREMENT PRIMARY key,
+	g_id BIGINT(20) not null comment '组id',
+	r_id BIGINT(20) not null comment '权限id',
+	right_type TINYINT not null comment '1,允许,0,不允许'
+)comment '组权限表'
+
+
+
 CREATE TABLE tb_role_right(
 	id BIGINT(20) not null auto_increment PRIMARY KEY comment '标识ID',
 	role_id BIGINT(20) not null comment '角色id',
-	right_id BIGINT(20) not null comment '权限id'
+	right_id BIGINT(20) not null comment '权限id',
+	right_type TINYINT not null comment '1,允许,0,不允许'
 )comment '角色权限表'
 
 
 
-CREATE TABLE tb_location(
+CREATE TABLE user_right(
+	id BIGINT(20) not null  PRIMARY KEY comment '标识ID',
+	u_id VARCHAR(12) not null comment '操作人',
+	right_id BIGINT(20) not null comment '权限id',
+	ac_id int(10) not null comment '门禁编号',
+	right_type TINYINT not null comment '1,允许,0,不允许'
+)comment '用户权限表'
+
+
+
+CREATE TABLE user_role(
+	id BIGINT(20) not null  PRIMARY KEY comment '标识ID',
+	u_id VARCHAR(12) not null comment '操作人',
+	role_id BIGINT(20) not null comment '角色id',
+)comment '用户角色表'
+
+
+
+CREATE TABLE tb_position(
 	id int(10) not null auto_increment PRIMARY KEY,
 	house VARCHAR(20) not null comment '哪栋楼,如信息楼',
 	floor VARCHAR(10) not null comment '楼层,如2楼',
@@ -65,10 +98,11 @@ CREATE TABLE tb_location(
 )comment '学校位置信息表'
 
 
+
 CREATE TABLE tb_ac(
 	ac_id int(10) not null auto_increment PRIMARY KEY comment '门禁编号',
 	status TINYINT DEFAULT null comment '1开启状态，0关闭状态',
-	location_id int(10) not null comment '位置id,用于确定门禁所在位置',
+	pos_id int(10) not null comment '位置id,用于确定门禁所在位置',
 	note VARCHAR(200) comment '备注'
 )comment '门禁信息表'
 
@@ -76,7 +110,8 @@ CREATE TABLE tb_ac(
 CREATE TABLE tb_log(
 	log_id BIGINT(20) not null auto_increment PRIMARY key, 
 	u_id VARCHAR(12) not null comment '操作人',
+	ac_id int(10) not null comment '门禁编号',
 	op_type TINYINT not null comment '操作类型：1刷卡，0扫码',
 	door_status TINYINT not null comment '1进入，0离开',
 	op_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP comment '操作时间'
-)
+)comment '日志记录表'
