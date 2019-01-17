@@ -23,6 +23,7 @@ CREATE TABLE tb_user(
 	class VARCHAR(100) comment '班级',
 	college VARCHAR(50) comment '二级学院',
 	phone VARCHAR(20) DEFAULT null comment '联系手机,默认为空',
+	count int(10) DEFAULT 0 comment '刷卡次数',
 	created TIMESTAMP DEFAULT CURRENT_TIMESTAMP comment '创建时间',
 	CONSTRAINT PRIMARY KEY(id)
 )comment '用户信息表'
@@ -40,6 +41,8 @@ CREATE TABLE tb_right(
 	id BIGINT(20) not null auto_increment PRIMARY key comment '权限ID',
 	right_name VARCHAR(64) not null comment '权限名称',
 	range VARCHAR(12) not null comment '权限范围',
+	starttime TIMESTAMP comment '开始时间',
+	endtime TIMESTAMP comment '结束时间',
 	description VARCHAR(200) comment '权限具体描述'
 )comment '权限表'
 
