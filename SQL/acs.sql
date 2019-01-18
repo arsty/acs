@@ -18,7 +18,7 @@
 CREATE TABLE tb_user(
 	id bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Id',
 	u_id VARCHAR(12) not null UNIQUE comment '工号/登录名',
-	u_pwd VARCHAR(32) not null comment '密码，加密储存',
+	u_pwd VARCHAR(32) comment '密码，加密储存',
 	fullname VARCHAR(20) not null comment '姓名',
 	class VARCHAR(100) comment '班级',
 	college VARCHAR(50) comment '二级学院',
@@ -58,8 +58,7 @@ CREATE TABLE tb_group(
 CREATE TABLE group_right(
 	gr_id BIGINT(20) not null AUTO_INCREMENT PRIMARY key,
 	g_id BIGINT(20) not null comment '组id',
-	r_id BIGINT(20) not null comment '权限id',
-	right_type TINYINT not null comment '1,允许,0,不允许'
+	r_id BIGINT(20) not null comment '权限id'
 )comment '组权限表'
 
 
@@ -67,8 +66,7 @@ CREATE TABLE group_right(
 CREATE TABLE role_right(
 	id BIGINT(20) not null auto_increment PRIMARY KEY comment '标识ID',
 	role_id BIGINT(20) not null comment '角色id',
-	right_id BIGINT(20) not null comment '权限id',
-	right_type TINYINT not null comment '1,允许,0,不允许'
+	right_id BIGINT(20) not null comment '权限id'
 )comment '角色权限表'
 
 
@@ -76,7 +74,6 @@ CREATE TABLE role_right(
 CREATE TABLE user_right(
 	id BIGINT(20) not null  PRIMARY KEY comment '标识ID',
 	u_id VARCHAR(12) not null comment '操作人',
-	right_id BIGINT(20) not null comment '权限id',
 	ac_id int(10) not null comment '门禁编号',
 	right_type TINYINT not null comment '1,允许,0,不允许'
 )comment '用户权限表'
@@ -89,11 +86,14 @@ CREATE TABLE user_role(
 	role_id BIGINT(20) not null comment '角色id'
 )comment '用户角色表'
 
+
+
+
 CREATE TABLE user_group(
 	ug_id int(10) not null auto_increment PRIMARY key,
 	u_id VARCHAR(12) not null,
 	g_id BIGINT(20) not null comment '组id' 
-)
+)comment '用户分组表'
 
 
 
@@ -112,6 +112,8 @@ CREATE TABLE tb_ac(
 	pos_id int(10) not null comment '位置id,用于确定门禁所在位置',
 	note VARCHAR(200) comment '备注'
 )comment '门禁信息表'
+
+
 
 CREATE TABLE ac_right(
 	ar_id int (10) not null PRIMARY key,
