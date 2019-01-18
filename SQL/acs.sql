@@ -41,8 +41,6 @@ CREATE TABLE tb_right(
 	id BIGINT(20) not null auto_increment PRIMARY key comment '权限ID',
 	right_name VARCHAR(64) not null comment '权限名称',
 	range VARCHAR(12) not null comment '权限范围',
-	starttime TIMESTAMP comment '开始时间',
-	endtime TIMESTAMP comment '结束时间',
 	description VARCHAR(200) comment '权限具体描述'
 )comment '权限表'
 
@@ -66,7 +64,7 @@ CREATE TABLE group_right(
 
 
 
-CREATE TABLE tb_role_right(
+CREATE TABLE role_right(
 	id BIGINT(20) not null auto_increment PRIMARY KEY comment '标识ID',
 	role_id BIGINT(20) not null comment '角色id',
 	right_id BIGINT(20) not null comment '权限id',
@@ -88,8 +86,14 @@ CREATE TABLE user_right(
 CREATE TABLE user_role(
 	id BIGINT(20) not null  PRIMARY KEY comment '标识ID',
 	u_id VARCHAR(12) not null comment '操作人',
-	role_id BIGINT(20) not null comment '角色id',
+	role_id BIGINT(20) not null comment '角色id'
 )comment '用户角色表'
+
+CREATE TABLE user_group(
+	ug_id int(10) not null auto_increment PRIMARY key,
+	u_id VARCHAR(12) not null,
+	g_id BIGINT(20) not null comment '组id' 
+)
 
 
 
@@ -108,6 +112,15 @@ CREATE TABLE tb_ac(
 	pos_id int(10) not null comment '位置id,用于确定门禁所在位置',
 	note VARCHAR(200) comment '备注'
 )comment '门禁信息表'
+
+CREATE TABLE ac_right(
+	ar_id int (10) not null PRIMARY key,
+	right_id bigint(20) not null,
+	ac_id int(10) not null,
+	starttime TIMESTAMP comment '开始时间',
+	endtime TIMESTAMP comment '结束时间'
+)comment '门禁权限表'
+
 
 
 CREATE TABLE tb_log(
